@@ -14,6 +14,9 @@ ui <- fluidPage(
       tabPanel("Plot for Weather Information",
                fluidRow(
                  column(width=10,
+                        ###如果这五个feature有哪一个没有被选中，output的图片中那个plot的位置会空出来
+                        ###需要改进一下code，使图片连起来没有空位
+                        ###ui中无法直接涉及到input的选择，可能要改原始的plot code
                         plotOutput("plot_temp_c"),
                         plotOutput("plot_temp_f"),
                         plotOutput("plot_wind_mph"),
