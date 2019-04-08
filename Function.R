@@ -30,7 +30,7 @@ current_weather <- function(id, type){
         latitude <- as.numeric(text[i])
       else if(name[i] == "longitude")
         longitude  <- as.numeric(text[i])
-      else if(name[i] == " observation_time")
+      else if(name[i] == "observation_time")
         observation_time <- text[i]
       else if(name[i] == "weather")
         weather <- text[i]
@@ -54,7 +54,7 @@ current_weather <- function(id, type){
         latitude <- as.numeric(text[i])
       else if(name[i] == "longitude")
         longitude  <- as.numeric(text[i])
-      else if(name[i] == " observation_time")
+      else if(name[i] == "observation_time")
         observation_time <- text[i]
       else if(name[i] == "weather")
         weather <- text[i]
