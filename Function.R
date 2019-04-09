@@ -21,6 +21,27 @@ current_weather <- function(id, type){
   m <- length(type)
   data <- rep(NA, m)
   mark <- rep(0, m)
+  if (m==0){
+    for (i in 1:n){
+      if(name[i] == "location")
+        location <- text[i]
+      else if(name[i] == "station_id")
+        station_id <- id
+      else if(name[i] == "latitude")
+        latitude <- as.numeric(text[i])
+      else if(name[i] == "longitude")
+        longitude  <- as.numeric(text[i])
+      else if(name[i] == "observation_time")
+        observation_time <- text[i]
+      else if(name[i] == "weather"){
+        weather <- text[i]
+        mark <- 1
+      }
+      
+    }
+    obs <- data.frame(location, station_id, latitude, longitude, observation_time,
+                      weather)
+  }
   if (m == 1){
     for (i in 1:n){
       if(name[i] == "location")
@@ -37,7 +58,7 @@ current_weather <- function(id, type){
         data <- text[i]
         mark <- 1
       }
-        
+      
     }
     obs <- data.frame(location, station_id, latitude, longitude, observation_time,
                       data)
@@ -106,7 +127,8 @@ plot_weather <- function(id_vector, type, label = T, number = F){
                                  color = element)) +
       geom_text(data = data, 
                 aes(x = longitude, y = latitude, label = station_id),
-                size = 1.5)+
+                size = 1.5,
+                vjust = -1)+
       theme_bw() +
       labs(title = type, 
            subtitle = as.character(data$observation_time[1]))+
@@ -126,6 +148,30 @@ plot_weather <- function(id_vector, type, label = T, number = F){
   }
 }
 
+###plot for shiny app
+plot_map <- function(id_vector, label = T){
+  data <- current_weather_more(id_vector, type = NULL)
+  states <- map_data("state")
+  if(label == T){
+    ggplot(data = states) + 
+      geom_polygon(aes(x = long, y = lat, group = group),
+                   color = "grey", alpha = 0.6) + 
+      geom_point(data = data,aes(x = longitude, y = latitude),color="red") +
+      geom_text(data = data, 
+                aes(x = longitude, y = latitude, label = station_id),
+                vjust=-1,
+                size = 3)+
+      theme_bw() 
+  }else{
+    ggplot(data = states) + 
+      geom_polygon(aes(x = long, y = lat, group = group),
+                   color = "grey", alpha = 0.6) + 
+      geom_point(data = data,aes(x = longitude, y = latitude),color="red") +
+      theme_bw() 
+  }
+}
+
+
 
 #example for reading data
 current_weather("KAMW", c("wind_mph", "temp_f", "haha"))
@@ -134,5 +180,5 @@ current_weather_more(c("KAMW", "KAIO", "KCID", "KCNC"), c("temp_f"))
 
 #example for plots
 plot_weather(c("KAMW", "KAIO", "KCID", "KCNC"), 
-                  type = "weather", 
-                  label = T, number = F)
+             type = "temp_c", 
+             label = T, number = T)
