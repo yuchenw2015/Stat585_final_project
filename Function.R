@@ -182,3 +182,5 @@ current_weather_more(c("KAMW", "KAIO", "KCID", "KCNC"), c("temp_f"))
 plot_weather(c("KAMW", "KAIO", "KCID", "KCNC"), 
              type = "temp_c", 
              label = T, number = T)
+
+    
